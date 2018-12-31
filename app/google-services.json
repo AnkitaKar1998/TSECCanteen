@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1056977207358",
+    "firebase_url": "https://tseccanteen-f57af.firebaseio.com",
+    "project_id": "tseccanteen-f57af",
+    "storage_bucket": "tseccanteen-f57af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056977207358:android:d95e4e13c5c88020",
+        "android_client_info": {
+          "package_name": "com.example.ankita.tseccanteen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056977207358-9mglribi0ui1kfc95u9kgl20ea16giet.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ankita.tseccanteen",
+            "certificate_hash": "006c87c54bdbd0a98cf3dd548b55975c2cd07999"
+          }
+        },
+        {
+          "client_id": "1056977207358-aihmvqb9jtbjsgh0uhk37s65jgdag9s9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3y_PhjuQWrcUrWM3RQXarB8rWXdXGbL4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056977207358-aihmvqb9jtbjsgh0uhk37s65jgdag9s9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
