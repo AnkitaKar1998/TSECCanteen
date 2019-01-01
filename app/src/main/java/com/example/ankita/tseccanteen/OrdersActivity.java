@@ -32,7 +32,7 @@ public class OrdersActivity extends AppCompatActivity {
     RecyclerView orderRecyclerView;
     RecyclerView.Adapter adapter;
 
-    String currentUserId, currentUserName;
+    String currentUserId;
 
 
     @Override
@@ -49,10 +49,6 @@ public class OrdersActivity extends AppCompatActivity {
         Intent intent = getIntent();
         currentUserId = intent.getStringExtra("currentUser");
 
-
-//        setData();
-
-
     }
 
     @Override
@@ -64,6 +60,8 @@ public class OrdersActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if(menuItem.getItemId() == R.id.item_menu) {
+            Intent intent = new Intent(OrdersActivity.this, MenuActivity.class);
+            startActivity(intent);
 
         } else if (menuItem.getItemId() == R.id.item_logout) {
             firebaseAuth.signOut();
@@ -79,23 +77,7 @@ public class OrdersActivity extends AppCompatActivity {
         super.onStart();
         Log.d("krishna", "Next");
 
-
-//        databaseReference1.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                currentUserName = dataSnapshot.child(currentUserId).child("name").getValue(String.class);
-//                Log.d("krishna", currentUserName);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
-
-        /* Rahuls side */
+        /* Rahuls side - Dtudent order retrival*/
 
 //        Query query = FirebaseDatabase.getInstance().getReference().child("OrdersAnkita").orderByChild("studentId").equalTo(currentUserId);
 //
@@ -124,6 +106,8 @@ public class OrdersActivity extends AppCompatActivity {
 //            }
 //        });
 
+        /* Canteen side - Order retrival */
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
@@ -135,14 +119,6 @@ public class OrdersActivity extends AppCompatActivity {
                     Log.d("krishna", "ankita before");
                     OrdersModalClass ordersModalClass = orderSnapShot.getValue(OrdersModalClass.class);
                     Log.d("krishna", "ankita after");
-//                    Log.d("krishna", "Order No: "+ordersModalClass.getOrderNo());
-//                    Log.d("krishna", "Amount: "+ordersModalClass.getAmount());
-////                    Log.d("krishna", "Student Name: "+ordersModalClass.getStudentName());
-//                    for(int i=0; i<ordersModalClass.getFoods().size(); i++) {
-//                        Log.d("krishna","FOOD "+i+": Name:-      "+ordersModalClass.getFoods().get(i).getName());
-//                        Log.d("krishna","FOOD "+i+": Quantity:-      "+ordersModalClass.getFoods().get(i).getQuantity());
-//                        Log.d("krishna","FOOD "+i+": Price:-      "+ordersModalClass.getFoods().get(i).getPrice());
-//                    }
                     ordersList.add(ordersModalClass);
                 }
                 orderRecyclerView = findViewById(R.id.rv_orders);
@@ -158,24 +134,6 @@ public class OrdersActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void setData() {
-//        ArrayList<FoodQuantityClass> foodQuantityList1 = new ArrayList<>();
-//        FoodQuantityClass foodQuantityClass11 = new FoodQuantityClass("Vada Pav", "2", "20");
-//        FoodQuantityClass foodQuantityClass12 = new FoodQuantityClass("Pav Bhaji", "1", "50");
-//        foodQuantityList1.add(foodQuantityClass11);
-//        foodQuantityList1.add(foodQuantityClass12);
-//        OrdersModalClass ordersModalClass1 = new OrdersModalClass("123", "Krishna", "70", foodQuantityList1);
-//        ordersList.add(ordersModalClass1);
-//
-//        ArrayList<FoodQuantityClass> foodQuantityList2 = new ArrayList<>();
-//        FoodQuantityClass foodQuantityClass21 = new FoodQuantityClass("Vada Pav", "2", "20");
-//        FoodQuantityClass foodQuantityClass22 = new FoodQuantityClass("Thali", "1", "60");
-//        foodQuantityList2.add(foodQuantityClass21);
-//        foodQuantityList2.add(foodQuantityClass22);
-//        OrdersModalClass ordersModalClass2 = new OrdersModalClass("147", "Rahul", "80", foodQuantityList2);
-//        ordersList.add(ordersModalClass2);
     }
 
 }

@@ -4,13 +4,6 @@ public class FoodQuantityClass {
 
     String name, quantity, price;
 
-//    public FoodQuantityClass(String name, String price, String quantity) {
-//        this.name = name;
-//        this.quantity = quantity;
-//        this.price = price;
-//    }
-
-
     public void setName(String name) {
         this.name = name;
     }

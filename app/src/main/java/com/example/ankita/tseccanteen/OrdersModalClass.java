@@ -7,17 +7,6 @@ public class OrdersModalClass {
     String orderNo, studentName, amount;
     ArrayList<FoodQuantityClass> foods;
 
-//    public OrdersModalClass () {
-//
-//    }
-//
-//    public OrdersModalClass(String amount, String orderNo, String studentName) {
-//        this.orderNo = orderNo;
-//        this.studentName = studentName;
-//        this.amount = amount;
-////        this.foodQuantityList = foodQuantityList;
-//    }
-
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
