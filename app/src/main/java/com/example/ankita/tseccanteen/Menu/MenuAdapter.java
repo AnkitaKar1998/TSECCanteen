@@ -17,15 +17,15 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     Context context;
     ArrayList<MenuModalClass> menuList;
-    OnClickListener onClickListener;
+    OnMenuClickListener onMenuClickListener;
 
-    public MenuAdapter(Context context, ArrayList<MenuModalClass> menuList, OnClickListener onClickListener) {
+    public MenuAdapter(Context context, ArrayList<MenuModalClass> menuList, OnMenuClickListener onMenuClickListener) {
         this.context = context;
         this.menuList = menuList;
-        this.onClickListener = onClickListener;
+        this.onMenuClickListener = onMenuClickListener;
     }
 
-    public interface OnClickListener {
+    public interface OnMenuClickListener {
         public void onMenuItemClick(int position);
     }
 
@@ -69,7 +69,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             menuItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickListener.onMenuItemClick(getAdapterPosition());
+                    onMenuClickListener.onMenuItemClick(getAdapterPosition());
                 }
             });
         }

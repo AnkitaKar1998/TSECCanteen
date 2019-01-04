@@ -1,5 +1,6 @@
 package com.example.ankita.tseccanteen.Orders;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.ankita.tseccanteen.MainActivity;
 import com.example.ankita.tseccanteen.Menu.MenuActivity;
 import com.example.ankita.tseccanteen.R;
@@ -25,6 +30,8 @@ import java.util.ArrayList;
 
 public class OrdersActivity extends AppCompatActivity {
 
+    Context context;
+
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("OrdersAnkita");
     DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -32,6 +39,10 @@ public class OrdersActivity extends AppCompatActivity {
     ArrayList<OrdersModalClass> ordersList = new ArrayList<>();
     RecyclerView orderRecyclerView;
     RecyclerView.Adapter adapter;
+    OrdersAdapter.OnOrderClickListener onOrderClickListener;
+
+    EditText otp;
+    Button verifyOtp;
 
     String currentUserId;
 
@@ -40,6 +51,7 @@ public class OrdersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
+        context = OrdersActivity.this;
         firebaseAuth = FirebaseAuth.getInstance();
 
 
@@ -49,6 +61,30 @@ public class OrdersActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         currentUserId = intent.getStringExtra("currentUser");
+
+        onOrderClickListener = new OrdersAdapter.OnOrderClickListener() {
+            @Override
+            public void onOrderClick(int position) {
+                MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                                                .title("Verify OTP")
+                                                .customView(R.layout.dialog_verify_order, false)
+                                                .show();
+
+                otp = (EditText) materialDialog.findViewById(R.id.et_otp);
+                verifyOtp = (Button) materialDialog.findViewById(R.id.btn_verify);
+
+
+
+                verifyOtp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String inputOtp = otp.getText().toString();
+                        Log.d("urmi", inputOtp);
+                    }
+                });
+
+            }
+        };
 
     }
 
@@ -76,7 +112,6 @@ public class OrdersActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("krishna", "Next");
 
         /* Rahuls side - Dtudent order retrival*/
 
@@ -112,18 +147,15 @@ public class OrdersActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                Log.d("krishna", "Hello");
                 ordersList.clear();
                 for(DataSnapshot orderSnapShot: dataSnapshot.getChildren()) {
                     /* Canteen Side orders retrieval */
 
-                    Log.d("krishna", "ankita before");
                     OrdersModalClass ordersModalClass = orderSnapShot.getValue(OrdersModalClass.class);
-                    Log.d("krishna", "ankita after");
                     ordersList.add(ordersModalClass);
                 }
                 orderRecyclerView = findViewById(R.id.rv_orders);
-                adapter = new OrdersAdapter(OrdersActivity.this, ordersList);
+                adapter = new OrdersAdapter(OrdersActivity.this, ordersList, onOrderClickListener);
                 orderRecyclerView.setHasFixedSize(true);
                 orderRecyclerView.setLayoutManager(new LinearLayoutManager(OrdersActivity.this));
                 orderRecyclerView.setAdapter(adapter);
@@ -131,7 +163,6 @@ public class OrdersActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("krishna", "Hello error");
             }
         });
 

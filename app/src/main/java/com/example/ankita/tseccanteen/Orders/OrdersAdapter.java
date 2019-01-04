@@ -3,6 +3,7 @@ package com.example.ankita.tseccanteen.Orders;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -20,10 +21,17 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
     Context context;
     ArrayList<OrdersModalClass> orderList;
+    OnOrderClickListener onOrderClickListener;
 
-    public OrdersAdapter(Context context, ArrayList<OrdersModalClass> orderList) {
+    public OrdersAdapter(Context context, ArrayList<OrdersModalClass> orderList, OnOrderClickListener onOrderClickListener) {
         this.context = context;
         this.orderList = orderList;
+        this.onOrderClickListener = onOrderClickListener;
+    }
+
+
+    public interface OnOrderClickListener {
+        public  void onOrderClick(int position);
     }
 
     @NonNull
@@ -107,6 +115,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         LinearLayout orderMenu;
         TextView orderNo, studentName;
+        CardView orderItem;
 
         public OrdersViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -114,6 +123,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             orderMenu = itemView.findViewById(R.id.ll_order_menu);
             orderNo = itemView.findViewById(R.id.tv_order_no);
             studentName = itemView.findViewById(R.id.tv_student_name);
+            orderItem = itemView.findViewById(R.id.card_view_order_item);
+
+            orderItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onOrderClickListener.onOrderClick(getAdapterPosition());
+                }
+            });
         }
     }
 

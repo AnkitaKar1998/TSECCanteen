@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +18,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class MenuActivity extends AppCompatActivity {
     RecyclerView menuRecyclerView;
     RecyclerView.Adapter adapter;
     ArrayList<MenuModalClass> menuList = new ArrayList<>();
-    MenuAdapter.OnClickListener onClickListener;
+    MenuAdapter.OnMenuClickListener onMenuClickListener;
     FloatingActionButton addMenuItem;
     Context context;
     int totalFood;
@@ -54,7 +52,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                                                .customView(R.layout.add_menu_item_layout, false)
+                                                .customView(R.layout.dialog_add_food_item, false)
                                                 .title("Add Food Item")
                                                 .show();
 
@@ -96,11 +94,11 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
-        onClickListener = new MenuAdapter.OnClickListener() {
+        onMenuClickListener = new MenuAdapter.OnMenuClickListener() {
             @Override
             public void onMenuItemClick(final int position) {
                 final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                        .customView(R.layout.add_menu_item_layout, false)
+                        .customView(R.layout.dialog_add_food_item, false)
                         .title("Availability")
                         .show();
 
@@ -163,7 +161,7 @@ public class MenuActivity extends AppCompatActivity {
 
                 menuRecyclerView.setHasFixedSize(true);
                 menuRecyclerView.setLayoutManager(new LinearLayoutManager(MenuActivity.this));
-                adapter = new MenuAdapter(MenuActivity.this, menuList, onClickListener);
+                adapter = new MenuAdapter(MenuActivity.this, menuList, onMenuClickListener);
                 totalFood = menuList.size();
                 menuRecyclerView.setAdapter(adapter);
 
