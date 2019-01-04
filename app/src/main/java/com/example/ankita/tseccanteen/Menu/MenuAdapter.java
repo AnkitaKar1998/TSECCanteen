@@ -1,13 +1,15 @@
-package com.example.ankita.tseccanteen;
+package com.example.ankita.tseccanteen.Menu;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.ankita.tseccanteen.R;
 
 import java.util.ArrayList;
 
@@ -15,10 +17,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     Context context;
     ArrayList<MenuModalClass> menuList;
+    OnClickListener onClickListener;
 
-    public MenuAdapter(Context context, ArrayList<MenuModalClass> menuList) {
+    public MenuAdapter(Context context, ArrayList<MenuModalClass> menuList, OnClickListener onClickListener) {
         this.context = context;
         this.menuList = menuList;
+        this.onClickListener = onClickListener;
+    }
+
+    public interface OnClickListener {
+        public void onMenuItemClick(int position);
     }
 
     @NonNull
@@ -47,6 +55,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     public  class MenuViewHolder extends RecyclerView.ViewHolder {
 
         TextView foodName, foodPrice, foodAvailability, foodDescription;
+        CardView menuItem;
 
         public MenuViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,6 +64,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             foodPrice = itemView.findViewById(R.id.tv_food_price);
             foodAvailability = itemView.findViewById(R.id.tv_food_availability);
             foodDescription = itemView.findViewById(R.id.tv_food_description);
+            menuItem = itemView.findViewById(R.id.card_view_menu_item);
+
+            menuItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickListener.onMenuItemClick(getAdapterPosition());
+                }
+            });
         }
     }
 

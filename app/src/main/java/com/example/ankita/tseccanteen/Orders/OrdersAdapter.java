@@ -1,4 +1,4 @@
-package com.example.ankita.tseccanteen;
+package com.example.ankita.tseccanteen.Orders;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.ankita.tseccanteen.R;
 
 import java.util.ArrayList;
 

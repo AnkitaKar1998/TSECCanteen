@@ -1,4 +1,4 @@
-package com.example.ankita.tseccanteen;
+package com.example.ankita.tseccanteen.Menu;
 
 public class MenuModalClass {
 
