@@ -31,7 +31,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
 
     public interface OnOrderClickListener {
-        public  void onOrderClick(int position);
+        public  void onOrderClick(String orderNo);
     }
 
     @NonNull
@@ -45,8 +45,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
     @Override
     public void onBindViewHolder(@NonNull OrdersViewHolder ordersViewHolder, int position) {
-        ordersViewHolder.orderNo.setText("Order No: "+orderList.get(position).getOrderNo());
-        ordersViewHolder.studentName.setText(orderList.get(position).getStudentName());
+        ordersViewHolder.orderNo.setText("Order No: "+orderList.get(position).getOrder_id());
+        ordersViewHolder.studentName.setText(orderList.get(position).getName());
 
         for (int i=0; i<orderList.get(position).getFoods().size(); i++) {
             LinearLayout itemDetails = new LinearLayout(context);
@@ -93,7 +93,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         llAmount.addView(total);
 
         TextView amount = new TextView(context);
-        amount.setText(orderList.get(position).getAmount());
+        amount.setText(orderList.get(position).getPrice());
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         total.setLayoutParams(layoutParams2);
         amount.setGravity(Gravity.CENTER);
@@ -128,7 +128,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             orderItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onOrderClickListener.onOrderClick(getAdapterPosition());
+                    onOrderClickListener.onOrderClick(orderList.get(getAdapterPosition()).getOrder_id());
                 }
             });
         }

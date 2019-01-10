@@ -33,8 +33,7 @@ public class OrdersActivity extends AppCompatActivity {
     Context context;
 
     FirebaseAuth firebaseAuth;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("OrdersAnkita");
-    DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference().child("Users");
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("R_Orders");
 
     ArrayList<OrdersModalClass> ordersList = new ArrayList<>();
     RecyclerView orderRecyclerView;
@@ -64,8 +63,8 @@ public class OrdersActivity extends AppCompatActivity {
 
         onOrderClickListener = new OrdersAdapter.OnOrderClickListener() {
             @Override
-            public void onOrderClick(int position) {
-                MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+            public void onOrderClick(final String orderNo) {
+                final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                                                 .title("Verify OTP")
                                                 .customView(R.layout.dialog_verify_order, false)
                                                 .show();
@@ -80,6 +79,25 @@ public class OrdersActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         String inputOtp = otp.getText().toString();
                         Log.d("urmi", inputOtp);
+                        Log.d("urmi", orderNo);
+
+                        Query query = FirebaseDatabase.getInstance().getReference().child("R_Orders").orderByChild("order_id").equalTo(orderNo);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                                    String name = data.child("name").getValue(String.class);
+                                    Log.d("urmi", "name: "+name);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                        materialDialog.dismiss();
                     }
                 });
 
@@ -113,44 +131,12 @@ public class OrdersActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        /* Rahuls side - Dtudent order retrival*/
-
-//        Query query = FirebaseDatabase.getInstance().getReference().child("OrdersAnkita").orderByChild("studentId").equalTo(currentUserId);
-//
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-//                    Log.d("krishna", "ankita before");
-//                    OrdersModalClass ordersModalClass = snapshot.getValue(OrdersModalClass.class);
-//                    Log.d("krishna", "ankita after");
-//                    Log.d("krishna", "Order No: "+ordersModalClass.getOrderNo());
-//                    Log.d("krishna", "Amount: "+ordersModalClass.getAmount());
-//                    ordersList.add(ordersModalClass);
-//                }
-//
-//                orderRecyclerView = findViewById(R.id.rv_orders);
-//                adapter = new OrdersAdapter(OrdersActivity.this, ordersList);
-//                orderRecyclerView.setHasFixedSize(true);
-//                orderRecyclerView.setLayoutManager(new LinearLayoutManager(OrdersActivity.this));
-//                orderRecyclerView.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-        /* Canteen side - Order retrival */
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 ordersList.clear();
                 for(DataSnapshot orderSnapShot: dataSnapshot.getChildren()) {
-                    /* Canteen Side orders retrieval */
-
                     OrdersModalClass ordersModalClass = orderSnapShot.getValue(OrdersModalClass.class);
                     ordersList.add(ordersModalClass);
                 }

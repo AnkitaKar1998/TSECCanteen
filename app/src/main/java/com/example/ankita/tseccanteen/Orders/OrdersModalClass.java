@@ -4,36 +4,36 @@ import java.util.ArrayList;
 
 public class OrdersModalClass {
 
-    String orderNo, studentName, amount;
+    String order_id, name, price;
     ArrayList<FoodQuantityClass> foods;
 
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public void setFoodQuantityList(ArrayList<FoodQuantityClass> foods) {
         this.foods = foods;
     }
 
-    public String getOrderNo() {
-        return orderNo;
+    public String getOrder_id() {
+        return order_id;
     }
 
-    public String getStudentName() {
-        return studentName;
+    public String getName() {
+        return name;
     }
 
-    public String getAmount() {
-        return amount;
+    public String getPrice() {
+        return price;
     }
 
     public ArrayList<FoodQuantityClass> getFoods() {

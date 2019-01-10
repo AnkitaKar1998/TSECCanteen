@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.ankita.tseccanteen.R;
 
 import java.util.ArrayList;
@@ -40,8 +42,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MenuViewHolder menuViewHolder, int position) {
+        Glide.with(context).load(menuList.get(position).getImage()).into(menuViewHolder.foodImage);
         menuViewHolder.foodName.setText(menuList.get(position).getName());
-        menuViewHolder.foodPrice.setText(menuList.get(position).getPrice());
+        menuViewHolder.foodPrice.setText("Rs. "+menuList.get(position).getPrice());
         menuViewHolder.foodAvailability.setText(menuList.get(position).getAvailability());
         menuViewHolder.foodDescription.setText(menuList.get(position).getDescription());
     }
@@ -56,10 +59,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
         TextView foodName, foodPrice, foodAvailability, foodDescription;
         CardView menuItem;
+        ImageView foodImage;
 
         public MenuViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            foodImage = itemView.findViewById(R.id.iv_food_image);
             foodName = itemView.findViewById(R.id.tv_food_name);
             foodPrice = itemView.findViewById(R.id.tv_food_price);
             foodAvailability = itemView.findViewById(R.id.tv_food_availability);

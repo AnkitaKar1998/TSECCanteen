@@ -2,7 +2,15 @@ package com.example.ankita.tseccanteen.Menu;
 
 public class MenuModalClass {
 
-    String name, price, availability, description;
+    String name, price, availability, description, image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getName() {
         return name;
