@@ -1,6 +1,7 @@
 package com.example.ankita.tseccanteen.Menu;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +48,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         menuViewHolder.foodPrice.setText("Rs. "+menuList.get(position).getPrice());
         menuViewHolder.foodAvailability.setText(menuList.get(position).getAvailability());
         menuViewHolder.foodDescription.setText(menuList.get(position).getDescription());
+        if(menuList.get(position).getAvailability().equals("Available")) {
+            menuViewHolder.menuItem.setBackgroundColor(Color.parseColor("#E4FFDC"));
+        } else {
+            menuViewHolder.menuItem.setBackgroundColor(Color.parseColor("#FFADAD"));
+        }
     }
 
     @Override

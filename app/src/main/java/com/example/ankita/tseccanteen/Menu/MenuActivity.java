@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -15,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.ankita.tseccanteen.BuildConfig;
 import com.example.ankita.tseccanteen.R;
@@ -96,11 +99,11 @@ public class MenuActivity extends AppCompatActivity {
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
                         switch (checkedId) {
                             case R.id.rb_yes:
-                                availability = "Yes";
+                                availability = "Available";
                                 break;
 
                             case R.id.rb_no:
-                                availability = "No";
+                                availability = "Not Available";
                                 break;
                         }
                     }
@@ -110,29 +113,55 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         String option[] = {"Camera", "Gallery"};
-                        MaterialDialog imageMaterialDialog = new MaterialDialog.Builder(context)
-                                                            .title("Add image from")
-                                                            .items(option)
-                                                            .itemsCallback(new MaterialDialog.ListCallback() {
-                                                                @Override
-                                                                public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
-                                                                    if(position == 0) {
-                                                                        if(hasPermissionsCamera()) {
-                                                                            takePhoto();
-                                                                        } else {
-                                                                            requestPermissionCamera();
-                                                                        }
-                                                                    }
-                                                                    if(position == 1) {
-                                                                        if(hasPermissionsGallery()) {
-                                                                            accessImage();
-                                                                        } else {
-                                                                            requestPermissionGallery();
-                                                                        }
-                                                                    }
-                                                                }
-                                                            })
-                                                            .show();
+//                        MaterialDialog imageMaterialDialog = new MaterialDialog.Builder(context)
+//                                                            .title("Add image from")
+//                                                            .items(option)
+//                                                            .itemsCallback(new MaterialDialog.ListCallback() {
+//                                                                @Override
+//                                                                public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+//                                                                    if(position == 0) {
+//                                                                        if(hasPermissionsCamera()) {
+//                                                                            takePhoto();
+//                                                                        } else {
+//                                                                            requestPermissionCamera();
+//                                                                        }
+//                                                                    }
+//                                                                    if(position == 1) {
+//                                                                        if(hasPermissionsGallery()) {
+//                                                                            accessImage();
+//                                                                        } else {
+//                                                                            requestPermissionGallery();
+//                                                                        }
+//                                                                    }
+//                                                                }
+//                                                            })
+//                                                            .show();
+
+                        new MaterialDialog.Builder(context)
+                                .title("Add food image")
+                                .positiveText("Camera")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        if(hasPermissionsCamera()) {
+                                            takePhoto();
+                                        } else {
+                                            requestPermissionCamera();
+                                        }
+                                    }
+                                })
+                                .negativeText("Gallery")
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        if(hasPermissionsGallery()) {
+                                            accessImage();
+                                        } else {
+                                            requestPermissionGallery();
+                                        }
+                                    }
+                                })
+                                .show();
                     }
                 });
 
@@ -174,7 +203,7 @@ public class MenuActivity extends AppCompatActivity {
                 foodPrice.setVisibility(View.GONE);
                 foodDescription.setVisibility(View.GONE);
                 addFoodItem.setVisibility(View.GONE);
-                addFoodImage.setVisibility(View.GONE);
+//                addFoodImage.setVisibility(View.GONE);
                 changeAvailability.setVisibility(View.VISIBLE);
 
                 availableRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

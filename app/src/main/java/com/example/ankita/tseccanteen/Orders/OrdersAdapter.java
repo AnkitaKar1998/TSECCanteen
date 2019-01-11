@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +32,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
 
     public interface OnOrderClickListener {
-        public  void onOrderClick(String orderNo);
+        public  void onOrderClick(String orderNo, CardView cardView, ImageView imageView);
     }
 
     @NonNull
@@ -116,6 +117,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         LinearLayout orderMenu;
         TextView orderNo, studentName;
         CardView orderItem;
+        ImageView orderDelivered;
 
         public OrdersViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -124,11 +126,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             orderNo = itemView.findViewById(R.id.tv_order_no);
             studentName = itemView.findViewById(R.id.tv_student_name);
             orderItem = itemView.findViewById(R.id.card_view_order_item);
+            orderDelivered = itemView.findViewById(R.id.iv_order_delivered);
 
             orderItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onOrderClickListener.onOrderClick(orderList.get(getAdapterPosition()).getOrder_id());
+                    onOrderClickListener.onOrderClick(orderList.get(getAdapterPosition()).getOrder_id(), orderItem, orderDelivered);
                 }
             });
         }
