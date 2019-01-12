@@ -96,7 +96,7 @@ public class OrdersActivity extends AppCompatActivity {
                                         cardView.setCardBackgroundColor(Color.parseColor("#E4FFDC"));
                                         databaseReference.child(data.getKey()).child("status").setValue("Delivered");
                                     } else {
-                                        Toast.makeText(context, "Wrong OTP", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Wrong OTP, Try Again", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }
