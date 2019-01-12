@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class OrdersModalClass {
 
-    String order_id, name, price;
+    String order_id, name, price, status;
     ArrayList<FoodQuantityClass> foods;
 
 
@@ -22,6 +22,14 @@ public class OrdersModalClass {
 
     public void setFoodQuantityList(ArrayList<FoodQuantityClass> foods) {
         this.foods = foods;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getOrder_id() {

@@ -29,7 +29,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     }
 
     public interface OnMenuClickListener {
-        public void onMenuItemClick(int position);
+        void onMenuItemClick(int position);
     }
 
     @NonNull
@@ -85,6 +85,5 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             });
         }
     }
-
 
 }

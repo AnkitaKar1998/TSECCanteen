@@ -24,7 +24,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -50,11 +52,13 @@ public class MenuActivity extends AppCompatActivity {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("FoodsAnkita");
     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
-    String name, price, availability, description, image;
+    ProgressBar menuProgressBar;
+
+    String name, price, availability, description;
     EditText foodName, foodPrice, foodDescription;
     RadioGroup availableRadioGroup;
     ImageView foodImage;
-    Button addFoodItem, addFoodImage,  changeAvailability;
+    Button addFoodItem, addFoodImage, changeAvailability;
 
     File file;
     Uri imageUri;
@@ -77,6 +81,7 @@ public class MenuActivity extends AppCompatActivity {
         context = MenuActivity.this;
         menuRecyclerView = findViewById(R.id.rv_menu);
         addMenuItem = findViewById(R.id.fab_add_menu_item);
+        menuProgressBar = findViewById(R.id.progress_bar_menu);
 
         addMenuItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,31 +117,6 @@ public class MenuActivity extends AppCompatActivity {
                 addFoodImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String option[] = {"Camera", "Gallery"};
-//                        MaterialDialog imageMaterialDialog = new MaterialDialog.Builder(context)
-//                                                            .title("Add image from")
-//                                                            .items(option)
-//                                                            .itemsCallback(new MaterialDialog.ListCallback() {
-//                                                                @Override
-//                                                                public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
-//                                                                    if(position == 0) {
-//                                                                        if(hasPermissionsCamera()) {
-//                                                                            takePhoto();
-//                                                                        } else {
-//                                                                            requestPermissionCamera();
-//                                                                        }
-//                                                                    }
-//                                                                    if(position == 1) {
-//                                                                        if(hasPermissionsGallery()) {
-//                                                                            accessImage();
-//                                                                        } else {
-//                                                                            requestPermissionGallery();
-//                                                                        }
-//                                                                    }
-//                                                                }
-//                                                            })
-//                                                            .show();
-
                         new MaterialDialog.Builder(context)
                                 .title("Add food image")
                                 .positiveText("Camera")
@@ -164,7 +144,6 @@ public class MenuActivity extends AppCompatActivity {
                                 .show();
                     }
                 });
-
 
                 addFoodItem.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -197,13 +176,14 @@ public class MenuActivity extends AppCompatActivity {
                 foodDescription = (EditText) materialDialog.findViewById(R.id.et_food_description);
                 availableRadioGroup = (RadioGroup) materialDialog.findViewById(R.id.rg_availability);
                 addFoodItem = (Button) materialDialog.findViewById(R.id.btn_add_menu_item);
+                addFoodImage = (Button) materialDialog.findViewById(R.id.btn_add_image);
                 changeAvailability = (Button) materialDialog.findViewById(R.id.btn_change_available);
 
                 foodName.setVisibility(View.GONE);
                 foodPrice.setVisibility(View.GONE);
                 foodDescription.setVisibility(View.GONE);
                 addFoodItem.setVisibility(View.GONE);
-//                addFoodImage.setVisibility(View.GONE);
+                addFoodImage.setVisibility(View.GONE);
                 changeAvailability.setVisibility(View.VISIBLE);
 
                 availableRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -229,6 +209,12 @@ public class MenuActivity extends AppCompatActivity {
                                                                 .child(foodId).child("availability");
                         databaseReference.setValue(availability);
                         materialDialog.dismiss();
+                        menuRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                menuRecyclerView.smoothScrollToPosition(position);
+                            }
+                        });
                     }
                 });
 
@@ -245,17 +231,21 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 menuList.clear();
+                int count = 0;
                 for (DataSnapshot menuSnapshot: dataSnapshot.getChildren()) {
                     MenuModalClass menuModalClass = menuSnapshot.getValue(MenuModalClass.class);
                     menuList.add(menuModalClass);
+                    count++;
+                    if(count >= dataSnapshot.getChildrenCount()) {
+                        menuProgressBar.setVisibility(View.GONE);
+                        menuRecyclerView.setVisibility(View.VISIBLE);
+                    }
                 }
-
                 menuRecyclerView.setHasFixedSize(true);
                 menuRecyclerView.setLayoutManager(new LinearLayoutManager(MenuActivity.this));
                 adapter = new MenuAdapter(MenuActivity.this, menuList, onMenuClickListener);
                 totalFood = menuList.size();
                 menuRecyclerView.setAdapter(adapter);
-
             }
 
             @Override

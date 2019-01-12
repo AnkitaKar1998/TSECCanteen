@@ -48,6 +48,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     public void onBindViewHolder(@NonNull OrdersViewHolder ordersViewHolder, int position) {
         ordersViewHolder.orderNo.setText("Order No: "+orderList.get(position).getOrder_id());
         ordersViewHolder.studentName.setText(orderList.get(position).getName());
+        if(orderList.get(position).getStatus().equals("Delivered")) {
+            ordersViewHolder.orderItem.setBackgroundColor(Color.parseColor("#E4FFDC"));
+            ordersViewHolder.orderDelivered.setVisibility(View.VISIBLE);
+        }
 
         for (int i=0; i<orderList.get(position).getFoods().size(); i++) {
             LinearLayout itemDetails = new LinearLayout(context);

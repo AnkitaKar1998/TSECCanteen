@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,6 +40,8 @@ public class OrdersActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("R_Orders");
 
+    ProgressBar orderProgressBar;
+
     ArrayList<OrdersModalClass> ordersList = new ArrayList<>();
     RecyclerView orderRecyclerView;
     RecyclerView.Adapter adapter;
@@ -56,6 +59,8 @@ public class OrdersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_orders);
         context = OrdersActivity.this;
         firebaseAuth = FirebaseAuth.getInstance();
+
+        orderProgressBar = findViewById(R.id.progress_bar_order);
 
         orderRecyclerView = findViewById(R.id.rv_orders);
         orderRecyclerView.setHasFixedSize(true);
@@ -80,7 +85,7 @@ public class OrdersActivity extends AppCompatActivity {
                     public void onClick(final View v) {
                         final String inputOtp = otp.getText().toString();
 
-                        Query query = FirebaseDatabase.getInstance().getReference().child("R_Orders").orderByChild("order_id").equalTo(orderNo);
+                        final Query query = FirebaseDatabase.getInstance().getReference().child("R_Orders").orderByChild("order_id").equalTo(orderNo);
                         query.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -89,12 +94,11 @@ public class OrdersActivity extends AppCompatActivity {
                                     if(inputOtp.equals(otp)) {
                                         imageView.setVisibility(View.VISIBLE);
                                         cardView.setCardBackgroundColor(Color.parseColor("#E4FFDC"));
-
+                                        databaseReference.child(data.getKey()).child("status").setValue("Delivered");
                                     } else {
                                         Toast.makeText(context, "Wrong OTP", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-
                             }
 
                             @Override
@@ -140,14 +144,19 @@ public class OrdersActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 ordersList.clear();
+                int count = 0;
                 for(DataSnapshot orderSnapShot: dataSnapshot.getChildren()) {
                     OrdersModalClass ordersModalClass = orderSnapShot.getValue(OrdersModalClass.class);
                     ordersList.add(ordersModalClass);
+                    count++;
+                    if(count >= dataSnapshot.getChildrenCount()) {
+                        orderProgressBar.setVisibility(View.GONE);
+                        orderRecyclerView.setVisibility(View.VISIBLE);
+                    }
                 }
-                orderRecyclerView = findViewById(R.id.rv_orders);
-                adapter = new OrdersAdapter(OrdersActivity.this, ordersList, onOrderClickListener);
                 orderRecyclerView.setHasFixedSize(true);
                 orderRecyclerView.setLayoutManager(new LinearLayoutManager(OrdersActivity.this));
+                adapter = new OrdersAdapter(OrdersActivity.this, ordersList, onOrderClickListener);
                 orderRecyclerView.setAdapter(adapter);
             }
 
