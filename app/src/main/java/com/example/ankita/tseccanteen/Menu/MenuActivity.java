@@ -217,7 +217,6 @@ public class MenuActivity extends AppCompatActivity {
                         });
                     }
                 });
-
             }
         };
 
@@ -264,13 +263,13 @@ public class MenuActivity extends AppCompatActivity {
             if(requestCode == 0) {
                 title = getTitleOfFile(file.toString());
                 Log.d("urmi", "title: "+title);
-
             }
             if(requestCode == 1) {
                 imageUri=data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 String picturePath = getPath(filePathColumn);
                 title=getTitleOfFile(picturePath);
+                Log.d("urmi", "title: "+title);
             }
             if(imageUri != null){
                 foodImage.setVisibility(View.VISIBLE);
@@ -331,8 +330,7 @@ public class MenuActivity extends AppCompatActivity {
         startActivityForResult(photoLibraryIntent, 1);
     }
 
-    public String getTitleOfFile(String filePath){
-
+    public String getTitleOfFile(String filePath) {
         char[] title=filePath.toCharArray();
         String finalTitle="";
         for(int count=title.length-1;count>=0;count--){
